@@ -23,7 +23,16 @@ type JsonStruct struct {
 	param  string `json:"Param"`
 }
 
-var _function map[string]func([]string) uint8
+var Function map[string]func(*Player, string) uint8
+
+func init() {
+	//	Function = map[string]func(*Player, string) uint8{
+	//		"send":     SendMessage,
+	//		"get":      SendMessage,
+	//		"AddMoney": SendMessage,
+	//		"AddVar":   SendMessage,
+	//	}
+}
 
 func NewPlayer() *Player {
 	m := make(chan string, 0)
@@ -73,6 +82,7 @@ func (pl *Player) GetMapFunction() map[string]func(string) bool {
 
 func (pl *Player) Handler(method string, param string) {
 	if handler, ok := pl.GetMapFunction()[method]; ok {
+		//if handler, ok := Function[method]; ok {
 		ret := handler(param)
 		if ret {
 			fmt.Println(method, param)

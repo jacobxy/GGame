@@ -116,6 +116,7 @@ func Load() {
 	loadVar()
 	LoadClan()
 	LoadClanPlayer()
+	loadAccountPwd()
 }
 
 func checkError(err error) {

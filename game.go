@@ -23,7 +23,7 @@ func main() {
 			fmt.Println(key1, value1)
 		}
 	}
-	server.StartServer()
+	server.StartServer2()
 
 	//slice := object.NewSliceCount(int(0))
 	//slice.Add(10)

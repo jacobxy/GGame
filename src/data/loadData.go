@@ -7,6 +7,7 @@ import (
 func Load() {
 	LoadDataFighter()
 	LoadDataItem()
+	LoadDataExp()
 }
 
 func checkError(err error) {
