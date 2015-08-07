@@ -25,6 +25,8 @@ func GetGlobalItem() map[uint32]*ItemDB {
 
 func LoadDataItem() {
 	//rows := db.SelectFromData("select `id`,`name`,`subclass`,`career`,`attrId`,`coin` from item_template")
+	fmt.Println("select item_template2")
+
 	rows := db.SelectFromData("select `id`,`name`,`subclass`,`maxQuantity`,`coin` from item_template2")
 	for rows.Next() {
 		item := &ItemDB{}

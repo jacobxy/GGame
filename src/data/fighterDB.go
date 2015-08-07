@@ -11,7 +11,7 @@ type Fighter struct {
 	Name        string
 	Color       uint8
 	TypeId      uint8
-	ChildType   uint8
+	ChildType   uint16
 	Speed       uint32
 	BodySize    uint8
 	Skills      string

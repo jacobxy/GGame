@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-
 	data.Load()
 	object.Load()
 	for key, value := range object.GetGlobalPlayers() {
@@ -24,12 +23,4 @@ func main() {
 		}
 	}
 	server.StartServer2()
-
-	//slice := object.NewSliceCount(int(0))
-	//slice.Add(10)
-	//slice.Add(200)
-	//slice.Add(30)
-	//slice.Add(40)
-	//sort.Sort(slice)
-	//slice.String()
 }

@@ -9,6 +9,7 @@ import (
 	"net"
 	"object"
 	"strconv"
+	"stream"
 	"time"
 )
 
@@ -44,6 +45,7 @@ func GetLocalServer() net.Listener {
 	return _listener
 }
 
+/*
 func StartServer() {
 	listener := GetLocalServer()
 	if listener == nil {
@@ -114,7 +116,6 @@ func CheckErr(err error) {
 		panic(err)
 	}
 }
-
 func StartConn(conn *net.Conn) {
 	go func(con *net.Conn) {
 		fmt.Println("conn准备收到消息：")
@@ -178,7 +179,7 @@ func handleClient(con *net.Conn) {
 	StartConn(con)
 	//StartServer2(con)
 }
-
+*/
 // 模仿版
 func StartServer2() {
 	listener := GetLocalServer()
@@ -217,8 +218,7 @@ func handleClient2(conn *net.Conn) {
 	go func(con net.Conn) {
 		//L:
 		for {
-			//con.SetReadDeadline(time.Now().Add(10 * time.Second))
-
+			con.SetReadDeadline(time.Now().Add(10 * time.Second))
 			n, err := io.ReadFull(con, header)
 			fmt.Println("开始接收信息")
 			if err != nil {
@@ -233,6 +233,7 @@ func handleClient2(conn *net.Conn) {
 
 			_, err = io.ReadFull(con, data)
 
+			checkErr(err)
 			select {
 			case in <- data:
 			case <-time.After(200 * time.Second):
@@ -245,8 +246,18 @@ func LineInAndOut(in chan []byte, out *ConnWrite) {
 	go func() {
 		for {
 			select {
-			case _, ok := <-in:
+			case msg, ok := <-in:
 				if !ok {
+					continue
+				}
+				st := stream.Reader(msg)
+				protocol, err := st.ReadU16()
+				switch {
+				case protocol < 100:
+					object.GetWorldInstance().GetWorldInstance(nil, st)
+				case protocol < 200:
+				case protocol < 300:
+				default:
 				}
 			}
 		}

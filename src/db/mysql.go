@@ -19,7 +19,7 @@ func checkErr(err error) {
 func Instance() *sql.DB {
 	var err error
 	if _mysql == nil {
-		_mysql, err = sql.Open("mysql", "jacob:kingxin@/asss_hand")
+		_mysql, err = sql.Open("mysql", "libo:jacob@/asss_hand")
 		checkErr(err)
 	}
 	return _mysql
@@ -43,7 +43,7 @@ func SelectFromDB(str string) *sql.Rows {
 func InstanceData() *sql.DB {
 	var err error
 	if _mysqlData == nil {
-		_mysqlData, err = sql.Open("mysql", "jacob:kingxin@/data_hand")
+		_mysqlData, err = sql.Open("mysql", "libo:jacob@/data_hand")
 		checkErr(err)
 	}
 	return _mysqlData
