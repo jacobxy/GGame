@@ -12,7 +12,9 @@ func main() {
 	conn, err := net.Dial("tcp", "127.0.0.1:9527")
 	CheckErr(err)
 	st := GetStream()
-	st.WriteRawBytes([]byte("844424930131971"))
+	st.WriteU16(12)
+	st.WriteU64(844424930132003)
+	//st.WriteRawBytes([]byte("844424930131971"))
 	//st.WriteString("844424930131971")
 	fmt.Println(st.Data())
 

@@ -1,14 +1,14 @@
 package server
 
 import (
-	"bufio"
+	//"bufio"
 	//"error"
 	"encoding/binary"
 	"fmt"
 	"io"
 	"net"
 	"object"
-	"strconv"
+	//"strconv"
 	"stream"
 	"time"
 )
@@ -252,9 +252,12 @@ func LineInAndOut(in chan []byte, out *ConnWrite) {
 				}
 				st := stream.Reader(msg)
 				protocol, err := st.ReadU16()
+				checkErr(err)
 				switch {
+				case protocol == 1:
+					LoadPlayerPtr(out, st)
 				case protocol < 100:
-					object.GetWorldInstance().GetWorldInstance(nil, st)
+					object.EnterMessage(out.pl, st)
 				case protocol < 200:
 				case protocol < 300:
 				default:
@@ -262,4 +265,15 @@ func LineInAndOut(in chan []byte, out *ConnWrite) {
 			}
 		}
 	}()
+}
+
+func LoadPlayerPtr(out *ConnWrite, st *stream.Stream) {
+	playerId, err := st.ReadU64()
+	checkErr(err)
+	pl, ok := object.GetGlobalPlayers()[playerId]
+	if ok {
+		out.pl = pl
+	} else {
+		out.conn.Write(([]byte)("error No Player"))
+	}
 }

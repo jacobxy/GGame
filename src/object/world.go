@@ -2,13 +2,14 @@ package object
 
 import (
 	//	"container"
+	"fmt"
 	"stream"
 	"time"
 )
 
 type Message struct {
 	Pl  *Player
-	Msg stream.Stream
+	Msg *stream.Stream
 }
 
 type World struct {
@@ -20,7 +21,7 @@ var _world *World
 
 var _sortForSorce *SliceCount
 
-type handlerFunc func(pl *Player, str stream.Stream) bool
+type handlerFunc func(pl *Player, str *stream.Stream) bool
 
 var _worldFunc map[uint16]handlerFunc
 
@@ -37,12 +38,14 @@ func GetWorldInstance() *World {
 	return _world
 }
 
-func Say(pl *Player, context stream.Stream) bool {
-	str := context.ReadString()
-
+func Say(pl *Player, context *stream.Stream) bool {
+	str, err := context.ReadString()
+	checkError(err)
+	fmt.Println(pl.Id, str)
+	return true
 }
 
-func EnterMessage(pl *Player, st stream.Stream) {
+func EnterMessage(pl *Player, st *stream.Stream) {
 	GetWorldInstance().Mes <- Message{pl, st}
 }
 
@@ -51,7 +54,8 @@ func HandlerMessage(wd *World) {
 	for {
 		select {
 		case worldMsg := <-wd.Mes:
-			funcId := worldMsg.Msg.ReadU16()
+			funcId, err := worldMsg.Msg.ReadU16()
+			checkError(err)
 			fn, ok := _worldFunc[funcId]
 			if ok {
 				fn(worldMsg.Pl, worldMsg.Msg)
