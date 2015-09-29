@@ -16,7 +16,14 @@ func checkErr(err error) {
 	}
 }
 
-func Instance() *sql.DB {
+func init() {
+	_mysql, err = sql.Open("mysql", "libo:jacob@/asss_hand")
+	checkErr(err)
+	_mysqlData, err = sql.Open("mysql", "libo:jacob@/data_hand")
+	checkErr(err)
+}
+
+/*func Instance() *sql.DB {
 	var err error
 	if _mysql == nil {
 		_mysql, err = sql.Open("mysql", "libo:jacob@/asss_hand")
@@ -24,18 +31,17 @@ func Instance() *sql.DB {
 	}
 	return _mysql
 }
+*/
 
 func Option(str string) {
-	my := Instance()
-	stmt, err := my.Prepare(str)
+	stmt, err := _mysql.Prepare(str)
 	checkErr(err)
 	defer stmt.Close()
 	stmt.Exec()
 }
 
 func SelectFromDB(str string) *sql.Rows {
-	my := Instance()
-	rows, err := my.Query(str)
+	rows, err := _mysql.Query(str)
 	checkErr(err)
 	return rows
 }
@@ -50,8 +56,7 @@ func InstanceData() *sql.DB {
 }
 
 func SelectFromData(str string) *sql.Rows {
-	my := InstanceData()
-	rows, err := my.Query(str)
+	rows, err := _mysqlData.Query(str)
 	checkErr(err)
 	return rows
 }

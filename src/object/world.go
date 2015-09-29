@@ -30,11 +30,16 @@ func init() {
 	_worldFunc[0] = Say
 }
 
+func init() {
+	_world = &World{Id: 0, Mes: make(chan Message)}
+	go HandlerMessage(_world)
+}
+
 func GetWorldInstance() *World {
-	if _world == nil {
-		_world = &World{Id: 0, Mes: make(chan Message)}
-		go HandlerMessage(_world)
-	}
+	//if _world == nil {
+	//	_world = &World{Id: 0, Mes: make(chan Message)}
+	//	go HandlerMessage(_world)
+	//}
 	return _world
 }
 

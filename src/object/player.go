@@ -5,6 +5,8 @@ import (
 	//"encoding/json"
 	"fmt"
 	//"net"
+	"reflect"
+	. "stream"
 	"strings"
 )
 
@@ -23,15 +25,10 @@ type JsonStruct struct {
 	param  string `json:"Param"`
 }
 
-var Function map[string]func(*Player, string) uint8
+var _IndexString map[uint32]string
 
 func init() {
-	//	Function = map[string]func(*Player, string) uint8{
-	//		"send":     SendMessage,
-	//		"get":      SendMessage,
-	//		"AddMoney": SendMessage,
-	//		"AddVar":   SendMessage,
-	//	}
+	_IndexString = make(map[uint32]string)
 }
 
 func NewPlayer() *Player {
@@ -52,7 +49,6 @@ func NewPlayer() *Player {
 			}
 		}
 	}(player)
-
 	return player
 }
 
@@ -94,4 +90,22 @@ func (pl *Player) Handler(method string, param string) {
 
 func (pl *Player) GetFighters() map[uint32]*Fighter {
 	return pl.MyFighters
+}
+
+func (pl *Player) HandlerStream(st *Stream) {
+	funstring, err := st.ReadString()
+	checkError(err)
+	fn, ok := pl.Cmd(funstring)
+	if !ok {
+		return
+	}
+	// param, err := st.ReadString()
+	// checkError(err)
+	fn(st)
+}
+
+func (pl *Player) Cmd(funcName string) (func(*Stream) error, bool) {
+	methodName := funcName
+	method := reflect.ValueOf(pl).MethodByName(methodName)
+	return method.Interface().(func(*Stream) error), true
 }

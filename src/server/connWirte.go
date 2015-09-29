@@ -11,10 +11,11 @@ const (
 	OUT_MAX = 100
 )
 
+//当out通道收到数据的时候通过conn发送出去
 type ConnWrite struct {
 	conn net.Conn
 	out  chan []byte
-	ctrl chan bool
+	ctrl chan bool //控制字段
 	pl   *Player
 }
 

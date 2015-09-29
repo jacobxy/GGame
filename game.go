@@ -13,6 +13,7 @@ import (
 func main() {
 	data.Load()
 	object.Load()
+
 	for key, value := range object.GetGlobalPlayers() {
 		fmt.Println(key, value)
 		fighters := value.GetFighters()
@@ -22,5 +23,6 @@ func main() {
 			fmt.Println(key1, value1)
 		}
 	}
+	fmt.Println("complete")
 	server.StartServer2()
 }

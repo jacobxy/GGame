@@ -256,24 +256,16 @@ func LineInAndOut(in chan []byte, out *ConnWrite) {
 				switch {
 				case protocol == 1:
 					LoadPlayerPtr(out, st)
-				case protocol < 100:
+				case protocol < 100: //world
 					object.EnterMessage(out.pl, st)
 				case protocol < 200:
 				case protocol < 300:
 				default:
+					if out.pl != nil {
+						out.pl.HandlerStream(st)
+					}
 				}
 			}
 		}
 	}()
-}
-
-func LoadPlayerPtr(out *ConnWrite, st *stream.Stream) {
-	playerId, err := st.ReadU64()
-	checkErr(err)
-	pl, ok := object.GetGlobalPlayers()[playerId]
-	if ok {
-		out.pl = pl
-	} else {
-		out.conn.Write(([]byte)("error No Player"))
-	}
 }
