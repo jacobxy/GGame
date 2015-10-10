@@ -236,7 +236,7 @@ func (st *Stream) WriteString(str string) {
 }
 
 func (st *Stream) WriteU16(v uint16) {
-	st.data = append(st.data, byte(v>>8), byte(v>>8))
+	st.data = append(st.data, byte(v>>8), byte(v))
 }
 
 func (st *Stream) Write16(v int16) {
