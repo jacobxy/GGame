@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	conn, err := net.Dial("tcp", "127.0.0.1:9527")
+	//conn, err := net.Dial("tcp", "127.0.0.1:9527")
+	conn, err := net.Dial("tcp", "192.168.10.8:9529")
 	CheckErr(err)
 	st := GetStream()
 	st.WriteU16(12)
